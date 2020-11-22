@@ -1,0 +1,1 @@
+Test: The same text in both folders.
