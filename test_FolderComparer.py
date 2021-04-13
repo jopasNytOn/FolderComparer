@@ -1,3 +1,4 @@
+import os
 import subprocess
 import unittest
 
@@ -25,6 +26,26 @@ class TestFolderComparer(unittest.TestCase):
     def test_OnlyInFolderTwo(self):
         value = call_command("python FolderComparer.py test\only2_1\ test\only2_2")
         self.assertEqual("only in test\\only2_2\\two.txt (25)", value)
+
+    def test_AdditionalEmptyFolder(self):
+        if not os.path.exists("test\\additional_empty_folder\\additional"):
+            os.makedirs("test\\additional_empty_folder\\additional")
+        value = call_command("python FolderComparer.py test\same1\ test\\additional_empty_folder")
+        self.assertEqual("test\\same1\\same.txt == test\\additional_empty_folder\\same.txt", value)
+
+    def test_AdditionalEmptyFolder2(self):
+        if not os.path.exists("test\\additional_empty_folder\\additional"):
+            os.makedirs("test\\additional_empty_folder\\additional")
+        value = call_command("python FolderComparer.py test\\additional_empty_folder\ test\same1")
+        self.assertEqual("test\\additional_empty_folder\\same.txt == test\\same1\\same.txt", value)
+
+    def test_AdditionalFolder(self):
+        value = call_command("python FolderComparer.py test\same1\ test\\additional_folder")
+        self.assertEqual("test\\same1\\same.txt == test\\additional_folder\\same.txt\r\nonly in test\\additional_folder\\additional\\one.txt (35)", value)
+
+    def test_AdditionalFolder2(self):
+        value = call_command("python FolderComparer.py test\\additional_folder\ test\same1")
+        self.assertEqual("test\\additional_folder\\same.txt == test\\same1\\same.txt\r\nonly in test\\additional_folder\\additional\\one.txt (35)", value)
 
 if __name__ == '__main__':
     unittest.main()

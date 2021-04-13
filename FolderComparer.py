@@ -2,7 +2,7 @@ import os
 import sys
 
 if len(sys.argv) != 3:
-    sys.exit('Version 0.02, Usage: FolderComparer <folder1> <folder2>')
+    sys.exit('Version 0.03, Usage: FolderComparer <folder1> <folder2>')
 
 
 class File():
@@ -17,11 +17,10 @@ class Folder():
         self.files = {}
         for r, d, f in os.walk(self.path):
             for file in f:
-                self.add_file(file)
+                self.add_file(r + '\\' if r[-1] != '\\' else r, file)
 
-    def add_file(self, filename):
-        whole_filename = self.path + filename
-        self.files[filename] = File(whole_filename, os.stat(whole_filename).st_size)
+    def add_file(self, path, filename):
+        self.files[filename] = File(path + filename, os.stat(path + filename).st_size)
 
 
 class FolderComparer():
@@ -53,7 +52,7 @@ class FolderComparer():
                 continue
 
 
-folder1 = Folder(sys.argv[1])
-folder2 = Folder(sys.argv[2])
+folder1 = Folder(sys.argv[1].replace('\\\\', '\\'))
+folder2 = Folder(sys.argv[2].replace('\\\\', '\\'))
 compare = FolderComparer(folder1, folder2)
 compare.print()
