@@ -47,5 +47,9 @@ class TestFolderComparer(unittest.TestCase):
         value = call_command("python FolderComparer.py test\\additional_folder\ test\same1")
         self.assertEqual("test\\additional_folder\\same.txt == test\\same1\\same.txt\r\nonly in test\\additional_folder\\additional\\one.txt (35)", value)
 
+    def test_AdditionalFolderButIgnoreSame(self):
+        value = call_command("python FolderComparer.py test\same1\ test\\additional_folder --ignore-same")
+        self.assertEqual("only in test\\additional_folder\\additional\\one.txt (35)", value)
+
 if __name__ == '__main__':
     unittest.main()

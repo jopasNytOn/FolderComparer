@@ -1,8 +1,12 @@
 import os
 import sys
 
+ignore_same = False
 if len(sys.argv) != 3:
-    sys.exit('Version 0.03, Usage: FolderComparer <folder1> <folder2>')
+    if len(sys.argv) == 4 and sys.argv[3] == "--ignore-same":
+        ignore_same = True
+    else:
+        sys.exit('Version 0.04, Usage: python3 FolderComparer.py <folder1> <folder2> [--ignore-same]')
 
 
 class File():
@@ -40,7 +44,8 @@ class FolderComparer():
                 print('only in {} ({})'.format(file1.whole_name, file1.size))
                 continue
             if self.are_files_equal(file1, file2):
-                print('{} == {}'.format(file1.whole_name, file2.whole_name))
+                if ignore_same == False:
+                    print('{} == {}'.format(file1.whole_name, file2.whole_name))
             else:
                 print('{} ({}) != {} ({})'.format(file1.whole_name, file1.size, file2.whole_name, file2.size))
         for file in self.folder2.files:
