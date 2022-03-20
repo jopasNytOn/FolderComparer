@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os
 import sys
 
@@ -6,7 +8,9 @@ if len(sys.argv) != 3:
     if len(sys.argv) == 4 and sys.argv[3] == "--ignore-same":
         ignore_same = True
     else:
-        sys.exit('Version 0.04, Usage: python3 FolderComparer.py <folder1> <folder2> [--ignore-same]')
+        sys.exit('Version 0.05, Usage: python3 FolderComparer.py <folder1> <folder2> [--ignore-same] \n\n' \
+                 '              e.g.   FolderComparer.py   C:\\folder_A  C:\\folder_B                 (in Cmd) \n'
+                 '                     ./FolderComparer.py /c/folder_A/ /c/folder_B/ --ignore-same  (in Mingw64)')
 
 
 class File():
